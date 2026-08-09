@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zuhus — Wohnen, einfach organisiert.</title>
+<meta name="description" content="Zuhus bündelt Mängelmeldungen, Reservationen und Mieterkommunikation in einem AI-Chat, für Verwaltung und Mieter:innen, modular erweiterbar.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<style>
+  @import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap');
+
+  :root {
+    --green: #4c6c5a;
+    --army: #395917;
+    --soft-green: #a4c8ae;
+    --soft-green-00: #e6efea;
+    --beige: #a39170;
+    --beige-200: #e5d6b8;
+    --tosca: #c1d8da;
+    --purple-300: #595d75;
+    --purple-200: #b8bed5;
+    --purple-100: #e3e4ea;
+    --red: #98140b;
+    --black: #121212;
+    --grey-300: #45515c;
+    --grey-200: #596269;
+    --white: #ffffff;
+    --bg: #e3e4ea;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--black);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+
+  /* Reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(227,228,234,0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  nav .inner { max-width: 1120px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
+  nav .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 17px; text-decoration: none; }
+  nav .brand .mark { color: var(--green); font-size: 22px; font-weight: 700; }
+  nav .links { display: flex; align-items: center; gap: 32px; font-size: 14px; font-weight: 500; color: var(--grey-300); }
+  nav .links a { text-decoration: none; }
+  nav .links a:hover { color: var(--black); }
+  nav .cta { background: var(--green); color: white; padding: 9px 18px; border-radius: 20px; font-size: 13.5px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+  .back { display: none; }
+  @media (max-width: 760px) { nav .links { display: none; } }
+
+  /* Hero */
+  .hero { padding: 96px 0 40px; text-align: center; }
+  .hero .eyebrow { display: inline-block; font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--army); background: var(--soft-green-00); padding: 6px 14px; border-radius: 20px; margin-bottom: 26px; }
+  .hero h1 { font-size: clamp(38px, 6.4vw, 74px); font-weight: 700; line-height: 1.04; letter-spacing: -0.02em; margin-bottom: 22px; }
+  .hero h1 .accent { color: var(--green); }
+  .hero p.sub { font-size: clamp(16px, 2vw, 20px); color: var(--grey-300); max-width: 620px; margin: 0 auto 36px; line-height: 1.55; }
+  .hero .ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 64px; }
+  .btn-primary { background: var(--green); color: white; padding: 15px 30px; border-radius: 30px; font-size: 15px; font-weight: 600; text-decoration: none; box-shadow: 0 10px 30px rgba(76,108,90,0.28); transition: transform 0.15s; }
+  .btn-primary:hover { transform: translateY(-2px); }
+  .btn-secondary { padding: 15px 26px; border-radius: 30px; font-size: 15px; font-weight: 600; text-decoration: none; color: var(--black); display: flex; align-items: center; gap: 6px; }
+  .btn-secondary:hover { color: var(--green); }
+
+  /* Product frame */
+  .frame { position: relative; max-width: 980px; margin: 0 auto; border-radius: 28px; overflow: hidden; box-shadow: 0 40px 90px rgba(18,18,18,0.18), 0 2px 8px rgba(18,18,18,0.06); border: 1px solid rgba(0,0,0,0.06); }
+  .frame img { width: 100%; display: block; }
+  .frame-bar { background: #eceef0; padding: 12px 16px; display: flex; gap: 6px; }
+  .frame-bar span { width: 10px; height: 10px; border-radius: 50%; background: #d5d7db; }
+
+  /* Stat band */
+  .statband { background: var(--black); color: white; padding: 72px 0; margin-top: 56px; }
+  .statband .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; text-align: center; }
+  .statband .num { font-size: clamp(34px, 5vw, 56px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .statband .num.green { color: var(--soft-green); }
+  .statband .num.beige { color: var(--beige-200); }
+  .statband .num.tosca { color: var(--tosca); }
+  .statband .lbl { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.5; max-width: 220px; margin: 0 auto; }
+  @media (max-width: 760px) { .statband .grid { grid-template-columns: 1fr; gap: 44px; } }
+
+  /* Section headers */
+  .section { padding: 110px 0; }
+  .section.tight { padding: 90px 0; }
+  .section-head { text-align: center; max-width: 640px; margin: 0 auto 56px; }
+  .section-head .eyebrow { font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--army); margin-bottom: 14px; display: block; }
+  .section-head h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 16px; }
+  .section-head p { font-size: 16px; color: var(--grey-300); line-height: 1.6; }
+
+  /* Two-audience split */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .split .card { border-radius: 28px; padding: 44px 38px; }
+  .split .card.a { background: var(--soft-green-00); }
+  .split .card.b { background: var(--tosca); }
+  .split .card .tag { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--army); margin-bottom: 14px; display: block; }
+  .split .card h3 { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+  .split .card p { font-size: 15px; color: var(--grey-300); line-height: 1.6; margin-bottom: 20px; }
+  .split .card ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .split .card li { font-size: 14px; color: var(--black); display: flex; align-items: center; gap: 10px; }
+  .split .card li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+  @media (max-width: 760px) { .split { grid-template-columns: 1fr; } }
+
+  /* Feature grid */
+  .features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .features .f { background: white; border-radius: 24px; padding: 32px 26px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+  .features .f .icon { width: 46px; height: 46px; border-radius: 14px; background: var(--soft-green-00); color: var(--green); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 20px; }
+  .features .f h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .features .f p { font-size: 13.5px; color: var(--grey-300); line-height: 1.55; }
+  @media (max-width: 900px) { .features { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .features { grid-template-columns: 1fr; } }
+
+  /* Showcase (image + text) */
+  .showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .showcase.reverse .img-col { order: 2; }
+  .showcase.reverse .text-col { order: 1; }
+  .showcase h2 { font-size: clamp(26px, 3.6vw, 38px); font-weight: 700; letter-spacing: -0.01em; margin-bottom: 18px; line-height: 1.15; }
+  .showcase p { font-size: 15.5px; color: var(--grey-300); line-height: 1.65; margin-bottom: 24px; }
+  .showcase ul { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .showcase li { display: flex; gap: 12px; font-size: 14.5px; align-items: flex-start; }
+  .showcase li .dot { width: 22px; height: 22px; border-radius: 50%; background: var(--soft-green-00); color: var(--green); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+  .showcase .frame { box-shadow: 0 30px 70px rgba(18,18,18,0.14); }
+  @media (max-width: 860px) {
+    .showcase { grid-template-columns: 1fr; gap: 36px; }
+    .showcase.reverse .img-col, .showcase.reverse .text-col { order: unset; }
+  }
+
+  /* Transform */
+  .transform { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .transform .box { border-radius: 24px; padding: 32px 30px; font-size: 14.5px; line-height: 1.65; }
+  .transform .before { background: #fdecea; border: 1px solid #f6d3cf; }
+  .transform .after { background: var(--soft-green-00); border: 1px solid #cfe4d6; }
+  .transform .lbl { display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+  .transform .before .lbl { color: var(--red); }
+  .transform .after .lbl { color: var(--army); }
+  @media (max-width: 760px) { .transform { grid-template-columns: 1fr; } }
+
+  /* Pricing */
+  .pricing-band { background: white; border-radius: 32px; padding: 64px 56px; display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+  .pricing-band .left h2 { font-size: clamp(24px, 3.2vw, 32px); font-weight: 700; margin-bottom: 12px; }
+  .pricing-band .left p { font-size: 15px; color: var(--grey-300); max-width: 420px; line-height: 1.6; }
+  .pricing-band .right { text-align: right; }
+  .pricing-band .price { font-size: clamp(36px, 5vw, 52px); font-weight: 700; color: var(--green); letter-spacing: -0.02em; }
+  .pricing-band .price span { font-size: 16px; font-weight: 500; color: var(--grey-200); }
+  .pricing-band .note { font-size: 13px; color: var(--grey-200); margin-top: 6px; }
+  @media (max-width: 700px) { .pricing-band { padding: 40px 28px; } .pricing-band .right { text-align: left; } }
+
+  /* Final CTA */
+  .final { background: var(--green); color: white; padding: 110px 0; text-align: center; border-radius: 40px 40px 0 0; margin-top: 40px; }
+  .final h2 { font-size: clamp(30px, 5vw, 50px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 18px; line-height: 1.15; }
+  .final p { font-size: 16px; color: rgba(255,255,255,0.8); max-width: 480px; margin: 0 auto 36px; }
+  .final .ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .final .btn-primary { background: white; color: var(--green); box-shadow: none; }
+  .final .btn-secondary { color: white; }
+  .final .btn-secondary:hover { color: var(--soft-green-00); }
+
+  footer { padding: 40px 0 60px; text-align: center; font-size: 13px; color: var(--grey-200); }
+  footer a { text-decoration: none; font-weight: 600; color: var(--grey-300); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a class="brand" href="../"><span class="mark">Z</span>Zuhus</a>
+    <div class="links">
+      <a href="#funktionen">Funktionen</a>
+      <a href="#fuer-wen">Für wen</a>
+      <a href="#preise">Preise</a>
+    </div>
+    <a class="cta" href="mailto:hallo@zuhus.ch">Demo vereinbaren</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow reveal in">Für Wohnbaugenossenschaften</span>
+    <h1 class="reveal in">Wohnen, einfach<br><span class="accent">organisiert.</span></h1>
+    <p class="sub reveal in">Zuhus bündelt Mängelmeldungen, Reservationen und Mieterkommunikation in einem AI-Chat, für Verwaltung und Mieter:innen, modular erweiterbar.</p>
+    <div class="ctas reveal in">
+      <a class="btn-primary" href="../prototipo/">Jetzt kostenlos testen</a>
+      <a class="btn-secondary" href="mailto:hallo@zuhus.ch">Demo vereinbaren →</a>
+    </div>
+  </div>
+  <div class="wrap reveal">
+    <div class="frame">
+      <div class="frame-bar"><span></span><span></span><span></span></div>
+      <img src="assets/product-chat.png" alt="Zuhus Chat Oberfläche">
+    </div>
+  </div>
+</header>
+
+<section class="statband">
+  <div class="wrap">
+    <div class="grid">
+      <div class="reveal">
+        <div class="num green">142</div>
+        <div class="lbl">Genossenschaften im Kanton Zürich als Zielmarkt</div>
+      </div>
+      <div class="reveal">
+        <div class="num beige">131</div>
+        <div class="lbl">davon ohne jegliches digitales Tool für Mieter:innen</div>
+      </div>
+      <div class="reveal">
+        <div class="num tosca">1</div>
+        <div class="lbl">Chat für Verwaltung und Mieterschaft, statt fünf Tools</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section tight" id="fuer-wen">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Ein Tool, zwei Nutzergruppen</span>
+      <h2>Für Verwaltung und Mieter:innen, gleichzeitig</h2>
+      <p>Dieselbe Plattform, unterschiedliche Rechte. Niemand jongliert mehr zwischen fünf verschiedenen Systemen.</p>
+    </div>
+    <div class="split">
+      <div class="card a reveal">
+        <span class="tag">Verwaltung</span>
+        <h3>Alles im Griff, ohne Papierstau</h3>
+        <p>Meldungen priorisieren, Reservationen freigeben und Mitteilungen versenden, direkt aus einem Dashboard.</p>
+        <ul>
+          <li>Mängelmeldungen zuweisen und verfolgen</li>
+          <li>Reservationen aller Liegenschaften im Überblick</li>
+          <li>Reporting für den Vorstand auf Knopfdruck</li>
+        </ul>
+      </div>
+      <div class="card b reveal">
+        <span class="tag">Mieter:innen</span>
+        <h3>Anliegen melden in 30 Sekunden</h3>
+        <p>Kein Formular, kein Anruf in der Warteschlange. Einfach im Chat schreiben, was los ist.</p>
+        <ul>
+          <li>Schäden melden, mit Foto, direkt im Chat</li>
+          <li>Gemeinschaftsraum selbst reservieren</li>
+          <li>Status der eigenen Meldung jederzeit einsehen</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="funktionen">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Funktionen</span>
+      <h2>Vier Kernaufgaben, ein Chat</h2>
+      <p>Zuhus koordiniert die Anliegen, die in jeder Genossenschaft täglich anfallen.</p>
+    </div>
+    <div class="features">
+      <div class="f reveal">
+        <div class="icon">🔧</div>
+        <h3>Mängelmeldungen</h3>
+        <p>Schäden erfassen, automatisch an die zuständige Fachperson weiterleiten, Status transparent nachverfolgen.</p>
+      </div>
+      <div class="f reveal">
+        <div class="icon">📅</div>
+        <h3>Reservationen</h3>
+        <p>Gemeinschaftsräume und gemeinsame Ressourcen buchen, ohne Excel-Liste oder Anruf bei der Verwaltung.</p>
+      </div>
+      <div class="f reveal">
+        <div class="icon">💬</div>
+        <h3>Mieterkommunikation</h3>
+        <p>Einladungen zu Versammlungen, Ankündigungen und wichtige Mitteilungen zentral versenden.</p>
+      </div>
+      <div class="f reveal">
+        <div class="icon">📋</div>
+        <h3>Administrative Anfragen</h3>
+        <p>Nebenkosten, Verträge und Reporting an den Vorstand, alles an einem Ort dokumentiert.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap">
+    <div class="showcase">
+      <div class="img-col reveal">
+        <div class="frame">
+          <div class="frame-bar"><span></span><span></span><span></span></div>
+          <img src="assets/product-dashboard.png" alt="Zuhus Dashboard für die Verwaltung">
+        </div>
+      </div>
+      <div class="text-col reveal">
+        <h2>Alles im Überblick, auf einen Blick</h2>
+        <p>Das Dashboard zeigt der Geschäftsführung in Echtzeit, was in der Genossenschaft läuft, ohne durch einzelne Meldungen klicken zu müssen.</p>
+        <ul>
+          <li><span class="dot">✓</span> Wohneinheiten, offene Meldungen und Reservationen auf einen Blick</li>
+          <li><span class="dot">✓</span> Meldungen pro Woche und nach Kategorie visualisiert</li>
+          <li><span class="dot">✓</span> Letzte Aktivitäten und offene Anfragen direkt einsehbar</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap">
+    <div class="showcase reverse">
+      <div class="img-col reveal">
+        <div class="frame">
+          <div class="frame-bar"><span></span><span></span><span></span></div>
+          <img src="assets/product-meldungen.png" alt="Zuhus Meldungsverwaltung">
+        </div>
+      </div>
+      <div class="text-col reveal">
+        <h2>Von der Meldung bis zur Erledigung</h2>
+        <p>Jede Mängelmeldung durchläuft einen klaren Status, von «Neu» über «In Bearbeitung» bis «Erledigt», mit Zuweisung an die zuständige Person.</p>
+        <ul>
+          <li><span class="dot">✓</span> Filter- und Suchfunktion für alle Liegenschaften</li>
+          <li><span class="dot">✓</span> Detailansicht mit Verlauf und Zuständigkeit</li>
+          <li><span class="dot">✓</span> Neue Meldungen manuell erfassen, z. B. nach einem Telefonanruf</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Der Unterschied</span>
+      <h2>Eine Heizung, zwei Wege</h2>
+    </div>
+    <div class="transform">
+      <div class="box before reveal">
+        <span class="lbl">Vorher</span>
+        Eine Mieterin ruft wegen einer defekten Heizung an, erreicht niemanden, schreibt eine Email, wartet 3 Tage auf Antwort. Die Verwaltung sucht in Papierakten nach der zuständigen Person.
+      </div>
+      <div class="box after reveal">
+        <span class="lbl">Nachher</span>
+        Die Mieterin öffnet den Zuhus-Chat, meldet den Defekt in 30 Sekunden mit Foto. Der Agent leitet die Meldung automatisch an den zuständigen Hauswart weiter und informiert über den Status.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section tight" id="preise">
+  <div class="wrap">
+    <div class="pricing-band reveal">
+      <div class="left">
+        <h2>Modular, nur zahlen was gebraucht wird</h2>
+        <p>Basis-Chat-Agent für alle Kernfunktionen, mit optionalen Zusatzmodulen wie Energieverwaltung oder Abstimmungen & Mitbestimmung.</p>
+      </div>
+      <div class="right">
+        <div class="price">CHF 2.50<span> – 4.00</span></div>
+        <div class="note">pro Wohneinheit / Monat · 30 Tage kostenlos testen</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2 class="reveal">Bereit für einen Chat,<br>der mitdenkt?</h2>
+    <p class="reveal">30 Tage kostenlos, unverbindlich, keine Kreditkarte nötig.</p>
+    <div class="ctas reveal">
+      <a class="btn-primary" href="../prototipo/">Jetzt kostenlos testen</a>
+      <a class="btn-secondary" href="mailto:hallo@zuhus.ch">Demo vereinbaren →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="../">← Zurück zur Übersicht</a>
+  <div style="margin-top:10px;">Zuhus · GenoDigit</div>
+</footer>
+
+<script>
+  const els = document.querySelectorAll('.reveal:not(.in)');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  els.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
