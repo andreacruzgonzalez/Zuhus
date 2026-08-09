@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Businessplan — Zuhus</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f4f4f2;
+      color: #222;
+      padding: 40px 24px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    h1 { font-size: 1.6rem; margin-bottom: 4px; }
+    .meta { color: #777; font-size: 0.83rem; margin-bottom: 8px; }
+    .tag { display: inline-block; background: #2c3e50; color: white; font-size: 0.72rem; padding: 2px 8px; border-radius: 3px; margin-right: 4px; }
+
+    /* KPI Row */
+    .kpis { display: flex; gap: 16px; margin: 28px 0; flex-wrap: wrap; }
+    .kpi { background: white; border-radius: 8px; padding: 18px 24px; flex: 1; min-width: 180px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .kpi .val { font-size: 1.5rem; font-weight: 700; color: #2c3e50; }
+    .kpi .lbl { font-size: 0.8rem; color: #888; margin-top: 2px; }
+
+    /* Nav */
+    .toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 8px; }
+    .toc a {
+      font-size: 0.78rem; color: #2c3e50; background: white; padding: 6px 12px;
+      border-radius: 14px; text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .toc a:hover { background: #2c3e50; color: white; }
+
+    h2 { font-size: 1.1rem; color: #2c3e50; margin: 40px 0 6px; border-bottom: 2px solid #2c3e50; padding-bottom: 6px; }
+    .section-sub { font-size: 0.8rem; color: #888; margin-bottom: 16px; }
+    h3 { font-size: 0.92rem; color: #2c3e50; margin-bottom: 8px; }
+
+    p.body-text { font-size: 0.87rem; line-height: 1.6; margin-bottom: 10px; }
+
+    /* Cards / grids */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+    .card {
+      background: white; border-radius: 8px; padding: 18px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .card ul { padding-left: 18px; font-size: 0.83rem; line-height: 1.55; }
+    .card ol { padding-left: 18px; font-size: 0.83rem; line-height: 1.55; }
+
+    .swot-s { border-left: 4px solid #2e7d32; }
+    .swot-w { border-left: 4px solid #c62828; }
+    .swot-o { border-left: 4px solid #1565c0; }
+    .swot-t { border-left: 4px solid #ef6c00; }
+    .swot-s h3 { color: #2e7d32; }
+    .swot-w h3 { color: #c62828; }
+    .swot-o h3 { color: #1565c0; }
+    .swot-t h3 { color: #ef6c00; }
+
+    .quote {
+      font-style: italic; color: #555; border-left: 3px solid #2c3e50;
+      padding: 4px 12px; margin: 10px 0; font-size: 0.83rem; background: #fafaf8;
+    }
+    .persona-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: #999; margin-top: 12px; margin-bottom: 2px; font-weight: 600; }
+    .persona-text { font-size: 0.83rem; line-height: 1.5; }
+
+    /* Tables */
+    .tbl-wrap { overflow-x: auto; margin-bottom: 16px; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); font-size: 0.84rem; }
+    th { background: #2c3e50; color: white; text-align: left; padding: 10px 12px; font-size: 0.78rem; font-weight: 600; }
+    td { padding: 9px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafaf8; }
+    td.total-row, tr.total-row td { font-weight: 700; background: #f0f4f7; }
+
+    .pros-cons { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.83rem; margin-bottom: 16px; }
+    .pros-cons .pc { flex: 1; min-width: 260px; background: white; border-radius: 8px; padding: 14px 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .pros-cons .pc.plus { border-left: 4px solid #2e7d32; }
+    .pros-cons .pc.minus { border-left: 4px solid #c62828; }
+
+    .callout {
+      background: #2c3e50; color: white; border-radius: 8px; padding: 18px 22px;
+      font-size: 0.9rem; line-height: 1.6; margin: 16px 0;
+    }
+    .callout strong { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #a9c2d6; margin-bottom: 6px; }
+
+    /* Value prop */
+    .vp-transform { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+    .vp-transform .vp-box { flex: 1; min-width: 260px; border-radius: 8px; padding: 16px 20px; font-size: 0.83rem; line-height: 1.55; }
+    .vp-transform .before { background: #fdecea; border-left: 4px solid #c62828; }
+    .vp-transform .after { background: #e8f5e9; border-left: 4px solid #2e7d32; }
+    .vp-transform .lbl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-bottom: 6px; display: block; }
+    .before .lbl { color: #c62828; }
+    .after .lbl { color: #2e7d32; }
+
+    .taglines { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .tagline { display: inline-block; background: #eef1f3; color: #444; padding: 6px 14px; border-radius: 14px; font-size: 0.83rem; }
+    .tagline.selected { background: #2c3e50; color: white; font-weight: 600; }
+    .tagline.selected::before { content: "✓ "; }
+
+    .hero-mock {
+      background: white; border-radius: 10px; padding: 40px 30px; text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 16px;
+    }
+    .hero-mock h3 { font-size: 1.5rem; color: #2c3e50; margin-bottom: 10px; }
+    .hero-mock p { font-size: 0.95rem; color: #555; max-width: 560px; margin: 0 auto 18px; line-height: 1.5; }
+    .hero-mock .cta { display: inline-block; background: #2c3e50; color: white; padding: 9px 22px; border-radius: 20px; font-size: 0.85rem; margin: 0 5px; }
+    .hero-mock .cta.secondary { background: transparent; color: #2c3e50; border: 1px solid #2c3e50; }
+
+    /* GTM phases */
+    .phase { background: white; border-radius: 8px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-left: 4px solid #2c3e50; }
+    .phase-title { font-weight: 700; color: #2c3e50; font-size: 0.92rem; }
+    .phase-time { font-size: 0.75rem; color: #888; margin-bottom: 8px; }
+
+    @media (max-width: 800px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .kpi { min-width: 140px; }
+    }
+
+    /* Password gate */
+    #gate {
+      position: fixed; inset: 0; background: #2c3e50; color: white;
+      display: flex; align-items: center; justify-content: center; z-index: 999; padding: 24px;
+    }
+    #gate .box { background: white; color: #222; border-radius: 10px; padding: 32px 28px; max-width: 320px; width: 100%; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.25); }
+    #gate h2 { border: none; margin: 0 0 6px; font-size: 1.1rem; color: #2c3e50; }
+    #gate p { font-size: 0.8rem; color: #777; margin-bottom: 16px; }
+    #gate input { width: 100%; padding: 9px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; margin-bottom: 10px; }
+    #gate button { width: 100%; padding: 9px 12px; background: #2c3e50; color: white; border: none; border-radius: 6px; font-size: 0.88rem; cursor: pointer; }
+    #gate .err { color: #c62828; font-size: 0.78rem; margin-top: 8px; min-height: 1em; }
+    #appContent { display: none; }
+  </style>
+</head>
+<body>
+<div id="gate">
+  <div class="box">
+    <h2>Zuhus — Businessplan</h2>
+    <p>Dieser Inhalt ist passwortgeschützt.</p>
+    <input type="password" id="gatePw" placeholder="Passwort" autofocus>
+    <button onclick="checkGatePw()">Öffnen</button>
+    <div class="err" id="gateErr"></div>
+  </div>
+</div>
+<div id="appContent">
+<div class="container">
+
+  <h1>Businessplan — Zuhus</h1>
+  <div class="meta">
+    Projekt: GenoDigit &nbsp;·&nbsp; Erarbeitet: AC &nbsp;·&nbsp; Stand: August 2026 &nbsp;·&nbsp; Version 2
+    <br><span class="tag">intern</span>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="val">Kanton ZH</div><div class="lbl">Zielmarkt (142 Genossenschaften)</div></div>
+    <div class="kpi"><div class="val">Validierung / MVP</div><div class="lbl">Strategisches Ziel Jahr 1</div></div>
+    <div class="kpi"><div class="val">~12 Mte.</div><div class="lbl">Ziel Break-Even</div></div>
+    <div class="kpi"><div class="val">Modular</div><div class="lbl">Pricing pro Wohneinheit</div></div>
+  </div>
+
+  <div class="toc">
+    <a href="#swot">1. SWOT</a>
+    <a href="#competitor">2. Competitor Comparison</a>
+    <a href="#persona">3. Customer Persona</a>
+    <a href="#valueprop">4. Value Proposition</a>
+    <a href="#gtm">5. Go-to-Market Launch</a>
+    <a href="#pricing">6. Pricing Options</a>
+    <a href="#plan">7. 30-60-90 Day Plan</a>
+    <a href="#budget">8. Budget &amp; Break-Even</a>
+    <a href="#risks">9. Risks &amp; Mitigations</a>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 1. SWOT -->
+  <!-- ════════════════════════════════ -->
+  <h2 id="swot">1. SWOT Analysis</h2>
+  <p class="section-sub">AI-Agenten-Plattform für Wohnbaugenossenschaften</p>
+
+  <p class="body-text">
+    <strong>Overview:</strong> Ein modularer, zentraler AI-Chat, der für Verwaltung UND Mieter:innen einer Wohnbaugenossenschaft sämtliche Kernprozesse koordiniert (Mängelmeldungen, Reservationen, Mieterkommunikation, administrative Anfragen). Basis-Agent gratis/günstig, Zusatzmodule (Energieverwaltung, Abstimmungen, Buchhaltung) kostenpflichtig zubuchbar.
+    <br><strong>Strategisches Ziel:</strong> Technische und marktseitige Validierung der Idee (Proof-of-Concept), noch kein fixes Kundenziel.
+  </p>
+
+  <div class="grid-2">
+    <div class="card swot-s">
+      <h3>Strengths</h3>
+      <ol>
+        <li>Technische Kompetenz im Aufbau von AI-Agenten-Systemen bereits nachgewiesen (eigene Prototypen)</li>
+        <li>Modulares Modell erlaubt Kunden einen niedrigschwelligen Einstieg</li>
+        <li>Ein Tool für zwei Nutzergruppen (Verwaltung + Mieter) statt Punktlösungen</li>
+        <li>Bereits vorhandene Marktkenntnis (Marktstudie 142 Genossenschaften Kanton Zürich)</li>
+        <li>Kein Legacy-Ballast, kann AI-first von Grund auf designen</li>
+      </ol>
+    </div>
+    <div class="card swot-w">
+      <h3>Weaknesses</h3>
+      <ol>
+        <li>Noch kein MVP gebaut</li>
+        <li>Keine gesicherte Finanzierung</li>
+        <li>Kein Referenzkunde, erschwert Vertrauensaufbau bei konservativen Genossenschaften</li>
+        <li>Sensible Mieterdaten + oft träge Entscheidungsstrukturen (Vorstand/Kollektiv)</li>
+        <li>Kleines Team, begrenzte Kapazität für Produktentwicklung und Vertrieb parallel</li>
+      </ol>
+    </div>
+    <div class="card swot-o">
+      <h3>Opportunities</h3>
+      <ol>
+        <li>Sehr tiefer Digitalisierungsgrad im Markt (Ø 3/5, nur 1 von 9 analysierten Genossenschaften mit vollwertigem Mieterportal)</li>
+        <li>142 Genossenschaften allein im Kanton Zürich, viele mit knappen Verwaltungsressourcen</li>
+        <li>Modulares Pricing ermöglicht Recurring Revenue durch spätere Modul-Erweiterung</li>
+        <li>Wachsende Nutzerakzeptanz von Chat-Interfaces senkt Erklärungsaufwand</li>
+        <li>Nische, die grosse Verwaltungssoftware-Anbieter nicht spezifisch adressieren</li>
+      </ol>
+    </div>
+    <div class="card swot-t">
+      <h3>Threats</h3>
+      <ol>
+        <li>Etablierte Anbieter könnten AI-Chat-Features nachrüsten</li>
+        <li>Regulatorische Unsicherheit (nDSG, AI-Einsatz mit Personendaten)</li>
+        <li>Langsame Sales-Zyklen durch kollektive Entscheidungsstrukturen</li>
+        <li>Reputationsrisiko bei AI-Fehlern gegenüber Mietern</li>
+        <li>Abhängigkeit von Drittanbieter-AI-Modellen (Kosten, Verfügbarkeit)</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Top 5 Prioritäten</h3>
+      <ol>
+        <li>Technischen Proof-of-Concept für Basis-Agent bauen</li>
+        <li>Explorative Gespräche mit 2-3 Genossenschaften aus der Marktstudie führen</li>
+        <li>Datenschutz-/Governance-Konzept früh skizzieren</li>
+        <li>Modulares Preismodell grob definieren</li>
+        <li>Positionierung gegenüber bestehenden Portal-Lösungen (z.B. GBMZ) schärfen</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>30-Tage-Aktionsplan</h3>
+      <ul>
+        <li><strong>Woche 1:</strong> Produktvision 1-Pager, Kernfunktionen Basis-Agent definieren</li>
+        <li><strong>Woche 2:</strong> 2-3 explorative Gespräche mit Genossenschaften vereinbaren</li>
+        <li><strong>Woche 3:</strong> Technischer Prototyp für eine Kernfunktion bauen (z.B. Mängelmeldung via Chat)</li>
+        <li><strong>Woche 4:</strong> Feedback + Prototyp auswerten, Entscheidung über nächste Schritte</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 2. COMPETITOR COMPARISON -->
+  <!-- ════════════════════════════════ -->
+  <h2 id="competitor">2. Competitor Comparison</h2>
+  <p class="section-sub">Kanton Zürich</p>
+
+  <p class="body-text">
+    <strong>GBMZ Web-App</strong> (Gemeinnützige Bau- und Mietergenossenschaft Zürich) — einziger Fall mit vollständiger Digitalisierung (★★★★★), Web-App mit 15 Services (Reparaturanfragen, Schlüsselbestellung, Dokumente, mehrsprachig, 24/7).<br>
+    <strong>Status Quo / Kein digitales Tool</strong> — repräsentiert die grosse Mehrheit (~131 von 142 analysierten Genossenschaften), ohne Mieterportal oder App, Kommunikation via Telefon/Email/Papier.
+  </p>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr><th>Feature</th><th>GBMZ Web-App</th><th>Status Quo</th><th>Zuhus</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Mängelmeldung digital</td><td>Ja</td><td>Nein</td><td>Ja</td></tr>
+      <tr><td>Reservationssystem</td><td>Ja</td><td>Nein</td><td>Ja</td></tr>
+      <tr><td>AI-Chat-Interface</td><td>Nein (Formular-basiert)</td><td>Nein</td><td>Ja</td></tr>
+      <tr><td>Ein Tool für Verwaltung + Mieter</td><td>Unklar / vermutlich getrennt</td><td>Nein</td><td>Ja</td></tr>
+      <tr><td>Modular erweiterbar</td><td>Nein (Eigenentwicklung)</td><td>—</td><td>Ja</td></tr>
+      <tr><td>Mehrsprachig</td><td>Ja</td><td>Nein</td><td>Geplant</td></tr>
+      <tr><td>Preis</td><td>Intern entwickelt, kein Produkt</td><td>Keine direkten Kosten</td><td>Modular (Basis + Zusatzmodule)</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="pros-cons">
+    <div class="pc plus">
+      <strong>GBMZ Web-App</strong>
+      <p class="body-text" style="margin-top:6px;">+ bewährt im Einsatz, höchster Digitalisierungsgrad<br>− kein AI-Chat, keine Modularität, nicht als Produkt für andere verfügbar, vermutlich kein einheitliches Interface für beide Nutzergruppen</p>
+    </div>
+    <div class="pc minus">
+      <strong>Status Quo</strong>
+      <p class="body-text" style="margin-top:6px;">+ keine Kosten/Abhängigkeit<br>− hoher manueller Aufwand, keine Skalierbarkeit, frustrierende Mieter-Experience</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <h3>Ehrliche Einschätzung — wo sind wir besser/schlechter</h3>
+    <p class="body-text"><strong>Besser:</strong> AI-Chat statt Formular-Portal, modular für viele Genossenschaften nutzbar, ein Tool für beide Nutzergruppen.<br>
+    <strong>Schlechter:</strong> kein bewährter Track Record, keine Referenz, AI-Antworten initial evtl. weniger zuverlässig als etabliertes Portal.</p>
+  </div>
+
+  <div class="card">
+    <h3>3 Moves, um in 90 Tagen zu gewinnen</h3>
+    <ol>
+      <li>Direkten Austausch mit GBMZ suchen, um von deren Erfahrung zu lernen und Differenzierung zu schärfen</li>
+      <li>Pilotangebot für 2-3 Genossenschaften ohne jegliches digitales Tool (grösste Opportunity-Gruppe)</li>
+      <li>"Ein Chat für alles" als klares Differenzierungsargument kommunizieren, Fokus auf Mieter-Erlebnis</li>
+    </ol>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 3. CUSTOMER PERSONA -->
+  <!-- ════════════════════════════════ -->
+  <h2 id="persona">3. Customer Persona</h2>
+  <p class="section-sub">Who We Serve</p>
+
+  <div class="grid-3">
+    <div class="card">
+      <h3>Die professionelle Geschäftsführung</h3>
+      <div class="quote">"Ich habe keine Zeit, jede Mängelmeldung einzeln per Telefon zu bearbeiten, aber ich kann mir auch keinen Systemwechsel leisten, der drei Monate Einführungszeit braucht."</div>
+      <div class="persona-label">Pains</div><div class="persona-text">Zeitdruck, viele manuelle Anfragen, Personalengpässe, Reporting-Aufwand gegenüber Vorstand</div>
+      <div class="persona-label">Goals</div><div class="persona-text">Effizienzsteigerung, weniger Routineanfragen, professionelles Auftreten gegenüber Mietern</div>
+      <div class="persona-label">Buying Trigger</div><div class="persona-text">Personalengpass, Beschwerden über lange Reaktionszeiten, Digitalisierungsdruck vom Vorstand</div>
+      <div class="persona-label">Kanäle</div><div class="persona-text">LinkedIn, Wohnbaugenossenschaften Schweiz (Verband), Branchenevents, Empfehlungen</div>
+      <div class="persona-label">Messaging</div><div class="persona-text">"Ein Chat, der Routineanfragen automatisch löst, mehr Zeit für das, was wirklich Ihre Aufmerksamkeit braucht."</div>
+    </div>
+    <div class="card">
+      <h3>Der ehrenamtliche Vorstand</h3>
+      <p class="section-sub" style="margin-bottom:8px;">Kleine / kollektive Genossenschaft</p>
+      <div class="quote">"Wir sind alle ehrenamtlich hier, niemand hat Kapazität für ein IT-Projekt, aber die Mängelmeldungen häufen sich trotzdem."</div>
+      <div class="persona-label">Pains</div><div class="persona-text">Keine Zeit/IT-Kenntnisse, sehr limitiertes Budget, Entscheidungen brauchen Kollektiv-Konsens</div>
+      <div class="persona-label">Goals</div><div class="persona-text">Ehrenamtliche Belastung reduzieren, einfache Lösung ohne Implementierungsaufwand</div>
+      <div class="persona-label">Buying Trigger</div><div class="persona-text">Konkreter Schmerzpunkt-Vorfall, Empfehlung einer anderen Genossenschaft</div>
+      <div class="persona-label">Kanäle</div><div class="persona-text">Verband, Mundpropaganda, lokale Netzwerktreffen</div>
+      <div class="persona-label">Messaging</div><div class="persona-text">"Kein IT-Projekt, kein Risiko: Testen Sie den Basis-Chat kostenlos, ohne Verpflichtung."</div>
+    </div>
+    <div class="card">
+      <h3>Die Mieterin / der Mieter</h3>
+      <p class="section-sub" style="margin-bottom:8px;">Endnutzer:in</p>
+      <div class="quote">"Ich will einfach nur schnell melden, dass die Heizung nicht geht, nicht ewig in der Warteschlange hängen oder ein Formular ausfüllen."</div>
+      <div class="persona-label">Pains</div><div class="persona-text">Lange Wartezeiten, unklare Zuständigkeiten, keine Transparenz über Status</div>
+      <div class="persona-label">Goals</div><div class="persona-text">Schnelle, unkomplizierte Lösung von Alltagsanliegen</div>
+      <div class="persona-label">Nutzungstreiber</div><div class="persona-text">Frustration mit bisherigem Prozess; positive Erfahrung führt zu Fürsprache bei der Verwaltung</div>
+      <div class="persona-label">Kanäle</div><div class="persona-text">Direkt im Chat, Mitteilungen der Verwaltung, Mieterversammlungen</div>
+      <div class="persona-label">Messaging</div><div class="persona-text">"Melde dein Anliegen in 30 Sekunden, direkt im Chat, keine Formulare."</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 4. VALUE PROPOSITION -->
+  <!-- ════════════════════════════════ -->
+  <h2 id="valueprop">4. Value Proposition — Zuhus</h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Kernproblem</h3>
+      <p class="body-text">Verwaltung und Mieter:innen von Wohnbaugenossenschaften verlieren täglich Zeit mit fragmentierter, manueller Kommunikation über Mängel, Reservationen und Anfragen.</p>
+    </div>
+    <div class="card">
+      <h3>Versprechen</h3>
+      <p class="body-text">Zuhus bündelt alle Kernprozesse einer Genossenschaft in einem einzigen, modularen AI-Chat für Verwaltung und Mieter:innen.</p>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card"><h3>1. Ein Chat statt fünf Tools</h3><p class="body-text">Mängelmeldung, Reservation und Kommunikation laufen über eine einzige Oberfläche.</p></div>
+    <div class="card"><h3>2. Modular wachsend</h3><p class="body-text">Von Basis-Agent bis Energieverwaltung, nur zahlen was tatsächlich gebraucht wird.</p></div>
+    <div class="card"><h3>3. Für beide Seiten gebaut</h3><p class="body-text">Verwaltung und Mieter:innen nutzen dieselbe Plattform, mit passenden Rechten.</p></div>
+  </div>
+
+  <div class="vp-transform">
+    <div class="vp-box before">
+      <span class="lbl">Vorher</span>
+      Eine Mieterin ruft wegen einer defekten Heizung an, erreicht niemanden, schreibt eine Email, wartet 3 Tage auf Antwort, die Verwaltung sucht in Papierakten nach der zuständigen Person.
+    </div>
+    <div class="vp-box after">
+      <span class="lbl">Nachher</span>
+      Die Mieterin öffnet den Zuhus-Chat, meldet den Defekt in 30 Sekunden mit Foto, der Agent leitet die Meldung automatisch an den zuständigen Hauswart weiter und informiert die Mieterin über den Status, ohne dass die Verwaltung manuell eingreifen muss.
+    </div>
+  </div>
+
+  <h3>Tagline (final gewählt: "Wohnen, einfach organisiert.")</h3>
+  <div class="taglines">
+    <span class="tagline">Ein Chat. Alle Anliegen.</span>
+    <span class="tagline">Zuhus, deine Genossenschaft, digital vernetzt.</span>
+    <span class="tagline selected">Wohnen, einfach organisiert.</span>
+    <span class="tagline">Der Chat, der für dich mitdenkt.</span>
+    <span class="tagline">Alles im Griff, ohne Formulare.</span>
+  </div>
+
+  <div class="hero-mock">
+    <h3>Wohnen, einfach organisiert.</h3>
+    <p>Zuhus bündelt Mängelmeldungen, Reservationen und Mieterkommunikation in einem AI-Chat, für Verwaltung und Mieter:innen, modular erweiterbar.</p>
+    <span class="cta">Jetzt kostenlos testen</span>
+    <span class="cta secondary">Demo vereinbaren</span>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 5. GO-TO-MARKET -->
+  <!-- ════════════════════════════════ -->
+  <h2 id="gtm">5. Go-to-Market Launch</h2>
+  <p class="section-sub">Zielgruppe: Geschäftsführungen und Verwaltungen von Wohnbaugenossenschaften im Kanton Zürich, Direktansprache, kalter Start, Zeithorizont 12 Monate.</p>
+
+  <div class="phase">
+    <div class="phase-title">Phase 1 — Vorbereitung</div>
+    <div class="phase-time">Monat 1-2</div>
+    <ul>
+      <li>Finalisierung MVP (Basis-Chat-Agent: Mängelmeldung, Reservationen, Mieterkommunikation, einfache Anfragen)</li>
+      <li>Aufbau einer kurzen, überzeugenden Story basierend auf der Marktstudie: 131 von 142 Genossenschaften im Kanton Zürich haben kein digitales Tool</li>
+      <li>Erstellung von Verkaufsunterlagen (One-Pager, Demo-Video, Pilot-Angebot)</li>
+      <li>Priorisierte Liste der 142 Genossenschaften nach Grösse und vermutlicher Digitalisierungsbereitschaft</li>
+    </ul>
+  </div>
+  <div class="phase">
+    <div class="phase-title">Phase 2 — Pilotakquise</div>
+    <div class="phase-time">Monat 3-5</div>
+    <ul>
+      <li>Direktansprache der Top 20-30 Genossenschaften (nach Grösse/Reife priorisiert) per Email und LinkedIn an Geschäftsführung/Verwaltung</li>
+      <li>Ziel: 3-5 Erstgespräche pro Monat</li>
+      <li>Angebot eines kostenlosen oder stark vergünstigten Pilotzeitraums (z.B. 3 Monate) für 1-2 Genossenschaften als Referenzkunden</li>
+      <li>Nutzung der Marktstudie als Türöffner ("Wir kennen den Digitalisierungsstand aller 142 Genossenschaften im Kanton, Sie gehören zu den X, die noch kein Tool haben")</li>
+    </ul>
+  </div>
+  <div class="phase">
+    <div class="phase-title">Phase 3 — Pilotbetrieb &amp; Validierung</div>
+    <div class="phase-time">Monat 6-9</div>
+    <ul>
+      <li>Onboarding und Betrieb bei 1-2 Pilotgenossenschaften</li>
+      <li>Enges Feedback von Verwaltung UND Mieterinnen/Mietern einholen</li>
+      <li>Erste konkrete Kennzahlen sammeln (Zeitersparnis, Anzahl bearbeiteter Anfragen, Zufriedenheit)</li>
+      <li>Referenzcase und Testimonial aufbauen</li>
+    </ul>
+  </div>
+  <div class="phase">
+    <div class="phase-title">Phase 4 — Skalierung im Kanton</div>
+    <div class="phase-time">Monat 10-12</div>
+    <ul>
+      <li>Ansprache weiterer 15-20 Genossenschaften mit dem validierten Pilotcase als Beweis</li>
+      <li>Erste zahlende Kunden ausserhalb des Pilots gewinnen</li>
+      <li>Modul-Upsell testen (z.B. Energieverwaltung oder Abstimmungen als Zusatzmodul bei bestehenden Kunden)</li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <strong>Kernbotschaft für die Erstansprache</strong>
+    "Wohnen, einfach organisiert. Zuhus ist der eine Chat, der Mängelmeldungen, Reservationen und Mieterkommunikation für Ihre Genossenschaft übernimmt, ohne dass Sie fünf verschiedene Tools brauchen."
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 6. PRICING -->
+  <!-- ════════════════════════════════ -->
+  <h2 id="pricing">6. Pricing Options</h2>
+  <p class="section-sub">Modell: Pro Wohneinheit, modular, mit kostenloser Testphase.</p>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Modul</th><th>Preis</th></tr></thead>
+    <tbody>
+      <tr><td class="name-cell"><strong>Basis-Chat-Agent</strong></td><td>CHF 2.50 – 4.00 / Wohneinheit / Monat (Mindestpauschale CHF 150/Monat für sehr kleine Genossenschaften)</td></tr>
+      <tr><td>Energieverwaltung</td><td>+ CHF 1.00 – 1.50 / Wohneinheit / Monat</td></tr>
+      <tr><td>Abstimmungen &amp; Mitbestimmung</td><td>+ CHF 0.50 – 1.00 / Wohneinheit / Monat</td></tr>
+      <tr><td>Komplexe Buchhaltungsanfragen</td><td>+ CHF 1.00 – 2.00 / Wohneinheit / Monat</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p class="body-text">
+    <strong>Zum Vergleich:</strong> Bei einer durchschnittlichen Genossenschaft aus der Marktstudie (~141 Wohneinheiten) ergäbe das ca. CHF 350-560/Monat für den Basis-Chat-Agent, ein realistischer Bereich für B2B-SaaS im Schweizer Proptech-Markt (Benchmark: vergleichbare Verwaltungs-/Portal-Tools liegen meist zwischen CHF 1.50 und 5.00 pro Einheit/Monat).
+  </p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Testphase</h3>
+      <p class="body-text">30 Tage kostenlos für jede neue Genossenschaft, unverbindlich, keine Kreditkarte nötig. Nach Ablauf automatische Umstellung auf Basis-Chat-Agent (kein automatisches Kündigungsrisiko durch versteckte Zahlungspflicht).</p>
+    </div>
+    <div class="card">
+      <h3>Pilotgenossenschaften</h3>
+      <p class="body-text">Die 1-2 Pilotkunden aus dem Go-to-Market erhalten einen verlängerten, stark vergünstigten oder kostenlosen Zeitraum (z.B. 3 Monate) als Gegenleistung für Feedback und Referenzstatus, unabhängig von der Standard-Testphase.</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 7. 30-60-90 -->
+  <!-- ════════════════════════════════ -->
+  <h2 id="plan">7. 30-60-90 Day Plan</h2>
+  <p class="section-sub">Basierend auf vorhandenem Prototyp, AC + interne technische Kapazität</p>
+
+  <div class="grid-3">
+    <div class="card">
+      <h3>Tag 1-30 — Fundament schärfen</h3>
+      <ul>
+        <li>Prototyp anhand der Marktstudien-Erkenntnisse verfeinern, Fokus auf die 3 Kernfunktionen des Basis-Chat-Agents</li>
+        <li>Verkaufsunterlagen erstellen: One-Pager, Demo-Skript, Pilot-Angebot mit den definierten Preisen</li>
+        <li>Zielliste der Top 20-30 Genossenschaften im Kanton Zürich erstellen</li>
+        <li>Testphase-Logik und Onboarding-Flow technisch vorbereiten</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Tag 31-60 — Markt testen</h3>
+      <ul>
+        <li>Direktansprache der priorisierten Genossenschaften starten</li>
+        <li>Ziel: mindestens 8-10 Erstgespräche/Demos durchführen</li>
+        <li>Pitch und Demo anhand des Feedbacks aus den ersten Gesprächen iterieren</li>
+        <li>Pilot-Konditionen mit 2-3 interessierten Genossenschaften konkret verhandeln</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Tag 61-90 — Ersten Piloten sichern</h3>
+      <ul>
+        <li>Verbindliche Zusage von mindestens 1 Pilotgenossenschaft erreichen</li>
+        <li>Onboarding der ersten Pilotgenossenschaft vorbereiten und starten</li>
+        <li>Feedback aus Verkaufsgesprächen auswerten, Produkt und Pitch schärfen</li>
+        <li>Grundlage für Phase 3 (Pilotbetrieb &amp; Validierung) schaffen</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 8. BUDGET -->
+  <!-- ════════════════════════════════ -->
+  <h2 id="budget">8. Budget &amp; Break-Even</h2>
+  <p class="section-sub">Bootstrapping, keine feste externe Investition, technische Kapazität als interne Ressource</p>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Kategorie</th><th>CHF/Jahr</th></tr></thead>
+    <tbody>
+      <tr><td>Infrastruktur &amp; AI-API-Kosten (Hosting, LLM-Nutzung)</td><td>3'000 – 6'000</td></tr>
+      <tr><td>Sales &amp; Marketing (Outreach-Tools, Reisen, Unterlagen)</td><td>5'000 – 8'000</td></tr>
+      <tr><td>Rechtliches &amp; Administratives (AGB, Datenschutz/AI-Compliance)</td><td>3'000 – 5'000</td></tr>
+      <tr><td>Tools &amp; Software (CRM, Design, Projektmanagement)</td><td>1'500 – 2'500</td></tr>
+      <tr><td>Puffer / Unvorhergesehenes</td><td>2'000 – 3'000</td></tr>
+      <tr class="total-row"><td>Total</td><td>~15'000 – 25'000</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout">
+    <strong>Break-Even-Rechnung</strong>
+    Durchschnittliche Genossenschaftsgrösse (Marktstudie): ~141 Wohneinheiten. Durchschnittlicher Umsatz pro Kunde (Basis-Chat-Agent, CHF 2.50-4.00/Einheit): ~CHF 350-560/Monat, im Mittel ~CHF 450/Monat = ~CHF 5'400/Jahr.
+    Um das mittlere Jahresbudget von ca. CHF 20'000 zu decken, braucht es rund 4 zahlende Genossenschaften durchschnittlicher Grösse (ohne Zusatzmodule).
+    Realismus-Check: Der Fahrplan sieht 1-2 Pilotkunden bis Monat 9 und Skalierung bis Monat 12 vor. Break-Even ist damit realistischerweise gegen Ende Jahr 1 erreichbar, nicht früher, da die ersten Piloten vergünstigt/kostenlos laufen.
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 9. RISKS -->
+  <!-- ════════════════════════════════ -->
+  <h2 id="risks">9. Risks &amp; Mitigations</h2>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Risiko</th><th>Auswirkung</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Adoption in konservativer Branche</strong> — Genossenschaften mit ehrenamtlichem Vorstand und traditioneller Verwaltung sind oft zurückhaltend gegenüber neuen, v.a. AI-basierten Tools</td>
+        <td>Langsamere Verkaufszyklen, geringere initiale Konversionsrate</td>
+        <td>Pilotprogramm mit vergünstigten/kostenlosen Referenzkunden, greifbare Vorher/Nachher-Beispiele statt abstrakter "AI"-Sprache, Fokus auf konkrete Zeitersparnis</td>
+      </tr>
+      <tr>
+        <td><strong>Technische Zuverlässigkeit der AI-Agenten</strong> — fehlerhafte oder falsch weitergeleitete Meldungen (z.B. bei Mängeln) untergraben Vertrauen</td>
+        <td>Reputationsschaden bereits bei den ersten Pilotkunden, schwer wieder aufzuholen</td>
+        <td>Menschliche Eskalationsstufe für unklare/kritische Fälle, enges Monitoring während Pilotphase, schrittweise Erweiterung der Autonomie der Agenten</td>
+      </tr>
+      <tr>
+        <td><strong>Datenschutz &amp; AI-Regulierung (CH/EU)</strong> — Verarbeitung sensibler Mieterdaten durch AI-Agenten</td>
+        <td>Rechtliche Risiken, Vertrauensverlust bei Verwaltung und Mieterschaft</td>
+        <td>Datenschutzkonformes Setup von Anfang an, transparente Kommunikation was die Agenten dürfen/nicht dürfen, klare AGB/Datenschutzerklärung vor dem ersten Pilotkunden</td>
+      </tr>
+      <tr>
+        <td><strong>Wettbewerb holt auf</strong> — GBMZ oder ein grösserer Proptech-Anbieter baut eine ähnliche AI-Lösung</td>
+        <td>Verlust des First-Mover-Vorteils im Kanton Zürich</td>
+        <td>Schnelle Pilotphase zur Referenzbildung, Fokus auf die Doppelnutzung (Verwaltung UND Mieter in einem Tool) als schwer kopierbares Alleinstellungsmerkmal</td>
+      </tr>
+      <tr>
+        <td><strong>Kapazitäts-/Ressourcenrisiko</strong> — kleines Team, bootstrapped Budget, kein Puffer für grössere Rückschläge</td>
+        <td>Verzögerungen im 30-60-90-Plan oder Go-to-Market gefährden den Break-Even innerhalb von 12 Monaten</td>
+        <td>Realistische Priorisierung (Basis-Chat-Agent vor Zusatzmodulen), Puffer im Budget eingeplant, Bereitschaft den Zeithorizont bei Bedarf anzupassen statt Qualität zu opfern</td>
+      </tr>
+      <tr>
+        <td><strong>Langer Entscheidungsweg bei Genossenschaften</strong> — sowohl Geschäftsführung als auch ehrenamtlicher Vorstand müssen oft zustimmen</td>
+        <td>Verkaufszyklen dauern länger als bei klassischen B2B-SaaS-Kunden</td>
+        <td>Vorstand frühzeitig in Demos einbeziehen, einfache, nicht-technische Entscheidungsvorlage bereitstellen, Referenzcase als Vertrauensanker nutzen</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p class="detail-note" style="font-size:0.78rem;color:#888;margin-top:20px;">
+    Grundlage: Marktstudie Wohnbaugenossenschaften Kanton Zürich (April 2026) &nbsp;·&nbsp; Erarbeitet: August 2026
+  </p>
+
+</div><!-- /container -->
+</div><!-- /appContent -->
+
+<script>
+  const GATE_PW = "zuhus2026";
+  function unlock() {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('appContent').style.display = 'block';
+  }
+  function checkGatePw() {
+    const val = document.getElementById('gatePw').value;
+    if (val === GATE_PW) {
+      sessionStorage.setItem('zuhus-gate-ok', '1');
+      unlock();
+    } else {
+      document.getElementById('gateErr').textContent = 'Falsches Passwort.';
+    }
+  }
+  document.getElementById('gatePw').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkGatePw();
+  });
+  if (sessionStorage.getItem('zuhus-gate-ok') === '1') unlock();
+</script>
+</body>
+</html>

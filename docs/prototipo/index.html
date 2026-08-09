@@ -1,0 +1,50 @@
+
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Zuhus</title>
+      <meta name="description" content="Zuhus — ein Chat für alles, was deine Genossenschaft bewegt." />
+      <meta name="robots" content="noindex, nofollow" />
+      <style>
+        html, body { height: 100%; margin: 0; } #root { height: 100%; }
+        #gate { position: fixed; inset: 0; background: #4c6c5a; color: white; display: flex; align-items: center; justify-content: center; z-index: 999; padding: 24px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+        #gate .box { background: white; color: #222; border-radius: 16px; padding: 32px 28px; max-width: 320px; width: 100%; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.25); }
+        #gate h2 { margin: 0 0 6px; font-size: 1.1rem; color: #121212; }
+        #gate p { font-size: 0.8rem; color: #777; margin-bottom: 16px; }
+        #gate input { width: 100%; padding: 9px 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 0.9rem; margin-bottom: 10px; box-sizing: border-box; font-family: inherit; }
+        #gate button { width: 100%; padding: 9px 12px; background: #4c6c5a; color: white; border: none; border-radius: 10px; font-size: 0.88rem; cursor: pointer; font-family: inherit; }
+        #gate .err { color: #98140b; font-size: 0.78rem; margin-top: 8px; min-height: 1em; }
+      </style>
+
+      <script type="module" crossorigin src="/Zuhus/prototipo/assets/index-CPp3rVCT.js"></script>
+      <link rel="stylesheet" crossorigin href="/Zuhus/prototipo/assets/index-2Zkr4ohm.css">
+    </head>
+
+    <body>
+      <div id="gate">
+        <div class="box">
+          <h2>Zuhus — Prototyp</h2>
+          <p>Dieser Inhalt ist passwortgeschützt.</p>
+          <input type="password" id="gatePw" placeholder="Passwort" autofocus>
+          <button onclick="checkGatePw()">Öffnen</button>
+          <div class="err" id="gateErr"></div>
+        </div>
+      </div>
+      <div id="root"></div>
+      <script>
+        var GATE_PW = "zuhus2026";
+        function unlockGate() { document.getElementById('gate').style.display = 'none'; }
+        function checkGatePw() {
+          var val = document.getElementById('gatePw').value;
+          if (val === GATE_PW) { sessionStorage.setItem('zuhus-gate-ok', '1'); unlockGate(); }
+          else { document.getElementById('gateErr').textContent = 'Falsches Passwort.'; }
+        }
+        document.getElementById('gatePw').addEventListener('keydown', function(e) { if (e.key === 'Enter') checkGatePw(); });
+        if (sessionStorage.getItem('zuhus-gate-ok') === '1') unlockGate();
+      </script>
+    </body>
+  </html>
+  
