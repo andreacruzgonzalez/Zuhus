@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Neutraler Leitfaden für Interviews mit Bewohnerinnen und Bewohnern ab 60 Jahren in Zürcher Wohnbaugenossenschaften.">
+	<title>Fragenkatalog für Senioreninterviews | Zuhus</title>
+	<style>
+		:root {
+			color-scheme: light;
+			--ink: #202a27;
+			--muted: #56635e;
+			--line: #d9dfda;
+			--paper: #fff;
+			--canvas: #f2f5f1;
+			--green: #175b49;
+			--green-soft: #e8f1ec;
+			--coral: #a44232;
+			--coral-soft: #f8ece8;
+			--gold: #795a17;
+			--gold-soft: #f7f1df;
+		}
+
+		* { box-sizing: border-box; }
+
+		body {
+			margin: 0;
+			background: var(--canvas);
+			color: var(--ink);
+			font: 16px/1.6 "Avenir Next", Avenir, "Segoe UI", sans-serif;
+		}
+
+		.page {
+			width: min(100% - 40px, 920px);
+			margin: 36px auto 64px;
+		}
+
+		.masthead {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 16px;
+			padding-bottom: 14px;
+			border-bottom: 1px solid var(--line);
+			color: var(--muted);
+			font-size: 12px;
+			font-weight: 700;
+			letter-spacing: .08em;
+			text-transform: uppercase;
+		}
+
+		.masthead strong { color: var(--green); }
+
+		h1, h2, h3, p { margin-top: 0; }
+
+		h1 {
+			max-width: 760px;
+			margin: 28px 0 10px;
+			font-family: Georgia, "Times New Roman", serif;
+			font-size: clamp(34px, 6vw, 54px);
+			font-weight: 500;
+			line-height: 1.08;
+		}
+
+		.subtitle {
+			max-width: 680px;
+			margin-bottom: 24px;
+			color: var(--muted);
+			font-size: 18px;
+		}
+
+		.meta-row {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px 24px;
+			margin-bottom: 30px;
+			color: var(--muted);
+			font-size: 13px;
+		}
+
+		.meta-row span::before {
+			content: "";
+			display: inline-block;
+			width: 7px;
+			height: 7px;
+			margin: 0 8px 1px 0;
+			border-radius: 50%;
+			background: var(--coral);
+		}
+
+		.opening, .interviewer-note {
+			padding: 22px 24px;
+			border-left: 4px solid var(--green);
+			background: var(--paper);
+		}
+
+		.opening h2, .interviewer-note h2 {
+			margin-bottom: 8px;
+			color: var(--green);
+			font-size: 15px;
+			letter-spacing: .04em;
+			text-transform: uppercase;
+		}
+
+		.opening p:last-child, .interviewer-note p:last-child { margin-bottom: 0; }
+
+		.placeholder {
+			margin-top: 14px;
+			padding: 12px 14px;
+			background: var(--gold-soft);
+			color: #594514;
+			font-size: 14px;
+		}
+
+		.section-heading {
+			display: grid;
+			grid-template-columns: 48px 1fr;
+			align-items: start;
+			gap: 14px;
+			margin: 38px 0 18px;
+		}
+
+		.section-number {
+			display: grid;
+			width: 42px;
+			aspect-ratio: 1;
+			place-items: center;
+			border-radius: 50%;
+			background: var(--green);
+			color: white;
+			font-family: Georgia, "Times New Roman", serif;
+			font-size: 20px;
+		}
+
+		.section-heading h2 {
+			margin: 2px 0 3px;
+			font-family: Georgia, "Times New Roman", serif;
+			font-size: 25px;
+			font-weight: 500;
+			line-height: 1.2;
+		}
+
+		.section-heading p { margin: 0; color: var(--muted); font-size: 14px; }
+
+		.question-list { margin: 0; padding: 0; list-style: none; }
+
+		.question {
+			display: grid;
+			grid-template-columns: 32px minmax(0, 1fr);
+			gap: 10px;
+			padding: 15px 0;
+			border-top: 1px solid var(--line);
+			break-inside: avoid;
+		}
+
+		.question-number {
+			padding-top: 1px;
+			color: var(--coral);
+			font-size: 12px;
+			font-weight: 800;
+		}
+
+		.question p { margin: 0; font-weight: 600; }
+
+		.probes {
+			margin: 8px 0 0;
+			color: var(--muted);
+			font-size: 14px;
+		}
+
+		.probes strong { color: var(--green); }
+
+		.interviewer-note {
+			margin-top: 38px;
+			border-left-color: var(--coral);
+			background: var(--coral-soft);
+		}
+
+		.interviewer-note h2 { color: var(--coral); }
+
+		.interviewer-note ul { margin: 10px 0 0; padding-left: 20px; }
+		.interviewer-note li { padding: 3px 0; }
+
+		.closing {
+			margin-top: 30px;
+			padding: 20px 22px;
+			border: 1px solid var(--line);
+			background: var(--paper);
+		}
+
+		.closing h2 { margin-bottom: 7px; font-size: 17px; }
+		.closing p { margin-bottom: 0; }
+
+		.footer {
+			display: flex;
+			justify-content: space-between;
+			gap: 16px;
+			margin-top: 30px;
+			padding-top: 12px;
+			border-top: 1px solid var(--line);
+			color: var(--muted);
+			font-size: 12px;
+		}
+
+		@media (max-width: 600px) {
+			.page { width: min(100% - 28px, 920px); margin-top: 22px; }
+			.opening, .interviewer-note { padding: 18px; }
+			.section-heading { grid-template-columns: 40px 1fr; gap: 10px; }
+			.section-number { width: 36px; }
+			.section-heading h2 { font-size: 22px; }
+			.footer { flex-direction: column; gap: 4px; }
+		}
+
+		@media print {
+			@page { size: A4; margin: 17mm 16mm; }
+			body { background: white; font-size: 11pt; }
+			.page { width: auto; margin: 0; }
+			h1 { font-size: 32pt; }
+			.subtitle { font-size: 13pt; }
+			.section-heading { margin-top: 25px; }
+			.opening, .interviewer-note, .closing { break-inside: avoid; }
+			.question { padding: 10px 0; }
+			.footer { margin-top: 18px; }
+		}
+	</style>
+</head>
+<body>
+	<main class="page">
+		<div class="masthead">
+			<strong>Zuhus</strong>
+			<span>Gesprächsleitfaden · Nutzeranalyse</span>
+		</div>
+
+		<header>
+			<h1>Fragenkatalog für Gespräche mit Bewohner:innen ab 60</h1>
+			<p class="subtitle">Kommunikation und Alltag in Zürcher Wohnbaugenossenschaften</p>
+			<div class="meta-row">
+				<span>Halbstrukturiertes Interview</span>
+				<span>Richtwert: 35–45 Minuten</span>
+				<span>Offene, neutrale Fragen</span>
+			</div>
+		</header>
+
+		<section class="opening" aria-labelledby="opening-title">
+			<h2 id="opening-title">Einstieg und Erklärung</h2>
+			<p>Vielen Dank, dass Sie sich Zeit für dieses Gespräch nehmen. Wir möchten besser verstehen, wie Informationen und Anliegen im Alltag zwischen Bewohner:innen und der Verwaltung ausgetauscht werden. Uns interessiert, was gut funktioniert und was manchmal schwierig ist. Ihre Erfahrungen helfen uns, Bedürfnisse besser zu verstehen und mögliche Verbesserungen zu erkennen.</p>
+			<p>Es gibt keine richtigen oder falschen Antworten. Uns interessiert Ihre persönliche Erfahrung. Sie können eine Frage auslassen oder das Gespräch jederzeit beenden.</p>
+			<p class="placeholder"><strong>Vor dem Gespräch ergänzen:</strong> kurz erklären, wie die Angaben verwendet und geschützt werden. Eine allfällige Tonaufnahme separat und ausdrücklich erfragen.</p>
+		</section>
+
+		<section aria-labelledby="section-1">
+			<div class="section-heading">
+				<span class="section-number">1</span>
+				<div><h2 id="section-1">Ankommen und Wohnsituation</h2><p>Mit dem Alltag und der Genossenschaft vertraut werden.</p></div>
+			</div>
+			<ol class="question-list">
+				<li class="question"><span class="question-number">1.1</span><div><p>Wie lange wohnen Sie schon in dieser Genossenschaft?</p></div></li>
+				<li class="question"><span class="question-number">1.2</span><div><p>Was gefällt Ihnen am Leben hier besonders?</p></div></li>
+				<li class="question"><span class="question-number">1.3</span><div><p>Wenn Sie ein Anliegen an Ihre Wohnbaugenossenschaft haben, das Ihre Wohnung oder das Zusammenleben betrifft: An wen wenden Sie sich?</p><p class="probes"><strong>Bei Bedarf nachfragen:</strong> Wie wissen Sie, an wen Sie sich wenden können? Können Sie von einem konkreten Anliegen erzählen?</p></div></li>
+			</ol>
+		</section>
+
+		<section aria-labelledby="section-2">
+			<div class="section-heading">
+				<span class="section-number">2</span>
+				<div><h2 id="section-2">Informationen aus der Genossenschaft</h2><p>Erfahren, welche Informationen ankommen und welche Bedeutung gedruckte Mitteilungen haben.</p></div>
+			</div>
+			<ol class="question-list">
+				<li class="question"><span class="question-number">2.1</span><div><p>Wie erfahren Sie normalerweise, was in Ihrer Genossenschaft passiert?</p><p class="probes"><strong>Bei Bedarf nachfragen:</strong> Können Sie sich an eine Information erinnern, die Sie kürzlich erhalten haben?</p></div></li>
+				<li class="question"><span class="question-number">2.2</span><div><p>Was machen Sie, wenn eine gedruckte Mitteilung bei Ihnen ankommt?</p><p class="probes"><strong>Bei Bedarf nachfragen:</strong> Lesen Sie sie gleich oder später? Bewahren Sie gewisse Mitteilungen auf? Gibt es etwas, das Sie daran besonders nützlich oder weniger nützlich finden?</p></div></li>
+				<li class="question"><span class="question-number">2.3</span><div><p>Welche Bedeutung haben gedruckte Mitteilungen für Sie im Vergleich zu den anderen Wegen, auf denen Sie Informationen erhalten?</p><p class="probes"><strong>Bei Bedarf nachfragen:</strong> Gibt es Informationen, die Sie besonders gerne auf Papier erhalten?</p></div></li>
+				<li class="question"><span class="question-number">2.4</span><div><p>Ist es schon vorgekommen, dass eine wichtige Information Sie nicht oder zu spät erreicht hat? Was ist damals passiert?</p></div></li>
+			</ol>
+		</section>
+
+		<section aria-labelledby="section-3">
+			<div class="section-heading">
+				<span class="section-number">3</span>
+				<div><h2 id="section-3">Wenn etwas in der Wohnung repariert werden muss</h2><p>Einen konkreten Reparaturfall vom ersten Schritt bis zum Abschluss nachzeichnen.</p></div>
+			</div>
+			<ol class="question-list">
+				<li class="question"><span class="question-number">3.1</span><div><p>Denken Sie an das letzte Mal, als in Ihrer Wohnung etwas nicht funktioniert hat und repariert werden musste. Was ist passiert?</p></div></li>
+				<li class="question"><span class="question-number">3.2</span><div><p>Was haben Sie als Erstes unternommen?</p><p class="probes"><strong>Bei Bedarf nachfragen:</strong> Wie haben Sie entschieden, was zu tun ist?</p></div></li>
+				<li class="question"><span class="question-number">3.3</span><div><p>Wie haben Sie das Problem gemeldet, und an wen?</p><p class="probes"><strong>Bei Bedarf nachfragen:</strong> Was war dabei einfach oder mühsam? Hatten Sie verschiedene Möglichkeiten zur Auswahl?</p></div></li>
+				<li class="question"><span class="question-number">3.4</span><div><p>Was geschah, nachdem Sie das Problem gemeldet hatten?</p><p class="probes"><strong>Bei Bedarf nachfragen:</strong> Haben Sie eine Bestätigung oder weitere Informationen erhalten? Wussten Sie, wer sich darum kümmert und wie es weitergeht?</p></div></li>
+				<li class="question"><span class="question-number">3.5</span><div><p>Wie gut konnten Sie den Stand der Reparatur einschätzen?</p><p class="probes"><strong>Bei Bedarf nachfragen:</strong> Was hätten Sie gerne gewusst? Was haben Sie getan, wenn Sie länger nichts gehört haben?</p></div></li>
+				<li class="question"><span class="question-number">3.6</span><div><p>Wie wurde die Reparatur abgeschlossen? Entsprach der Ablauf Ihren Erwartungen?</p></div></li>
+				<li class="question"><span class="question-number">3.7</span><div><p>Wenn Sie am Ablauf etwas ändern könnten: Was würde Ihnen am meisten helfen?</p></div></li>
+			</ol>
+		</section>
+
+		<section aria-labelledby="section-4">
+			<div class="section-heading">
+				<span class="section-number">4</span>
+				<div><h2 id="section-4">Gemeinschaftliche Waschküche</h2><p>Den Ablauf und mögliche Schwierigkeiten aus Sicht der Bewohner:innen erkunden.</p></div>
+			</div>
+			<ol class="question-list">
+				<li class="question"><span class="question-number">4.1</span><div><p>Wie läuft es für Sie normalerweise ab, wenn Sie die gemeinschaftliche Waschküche benutzen?</p></div></li>
+				<li class="question"><span class="question-number">4.2</span><div><p>Gab es schon einmal Schwierigkeiten bei der Nutzung der Waschküche? Was ist passiert?</p><p class="probes"><strong>Bei Bedarf nachfragen:</strong> Was haben Sie dann unternommen? An wen haben Sie sich gewandt?</p></div></li>
+				<li class="question"><span class="question-number">4.3</span><div><p>Gibt es etwas am Ablauf, das Sie gerne einfacher oder anders hätten?</p></div></li>
+			</ol>
+		</section>
+
+		<section aria-labelledby="section-5">
+			<div class="section-heading">
+				<span class="section-number">5</span>
+				<div><h2 id="section-5">Kontakt mit der Verwaltung</h2><p>Bekannte und tatsächlich genutzte Kontaktwege auseinanderhalten.</p></div>
+			</div>
+			<ol class="question-list">
+				<li class="question"><span class="question-number">5.1</span><div><p>Welche Möglichkeiten kennen Sie, um die Verwaltung oder Geschäftsstelle zu erreichen?</p><p class="probes"><strong>Wichtig:</strong> Zuerst frei erzählen lassen. Nicht von sich aus einzelne Kanäle aufzählen.</p></div></li>
+				<li class="question"><span class="question-number">5.2</span><div><p>Welche dieser Möglichkeiten haben Sie selbst schon genutzt? Wann war das ungefähr, und worum ging es?</p></div></li>
+				<li class="question"><span class="question-number">5.3</span><div><p>Haben Sie schon einmal persönlich bei der Verwaltung oder Geschäftsstelle vorgesprochen? Was war der Anlass?</p><p class="probes"><strong>Bei Bedarf nachfragen:</strong> Was machte den persönlichen Kontakt in dieser Situation passend oder wichtig?</p></div></li>
+				<li class="question"><span class="question-number">5.4</span><div><p>Gab es einen Kontaktweg, den Sie gerne genutzt hätten, aber nicht nutzen konnten? Was stand im Weg?</p></div></li>
+				<li class="question"><span class="question-number">5.5</span><div><p>Wenn Sie ein Anliegen haben: Woran erkennen Sie, welcher Weg dafür geeignet ist?</p></div></li>
+			</ol>
+		</section>
+
+		<section aria-labelledby="section-6">
+			<div class="section-heading">
+				<span class="section-number">6</span>
+				<div><h2 id="section-6">Erfahrungen mit digitalen Angeboten</h2><p>Vertrautheit, Zugang, Unterstützung und persönliche Vorlieben ohne Altersannahmen verstehen.</p></div>
+			</div>
+			<ol class="question-list">
+				<li class="question"><span class="question-number">6.1</span><div><p>Welche digitalen Angebote oder Geräte nutzen Sie in Ihrem Alltag, falls überhaupt?</p><p class="probes"><strong>Bei Bedarf nachfragen:</strong> Wofür nutzen Sie diese am liebsten?</p></div></li>
+				<li class="question"><span class="question-number">6.2</span><div><p>Wie erleben Sie es, wenn Sie etwas Organisatorisches am Telefon, Tablet oder Computer erledigen?</p><p class="probes"><strong>Bei Bedarf nachfragen:</strong> Was geht gut? Wo wird es schwierig oder unübersichtlich?</p></div></li>
+				<li class="question"><span class="question-number">6.3</span><div><p>Wenn Sie bei einem digitalen Angebot nicht weiterkommen: Was tun Sie normalerweise?</p><p class="probes"><strong>Bei Bedarf nachfragen:</strong> Gibt es jemanden, den Sie um Unterstützung bitten? Ist die Unterstützung für Sie gut erreichbar?</p></div></li>
+				<li class="question"><span class="question-number">6.4</span><div><p>Gibt es Anliegen, die Sie lieber persönlich oder auf einem anderen Weg erledigen? Was ist Ihnen dabei wichtig?</p></div></li>
+			</ol>
+		</section>
+
+		<section aria-labelledby="section-7">
+			<div class="section-heading">
+				<span class="section-number">7</span>
+				<div><h2 id="section-7">Wünsche und Abschluss</h2><p>Prioritäten setzen lassen und Raum für nicht angesprochene Themen geben.</p></div>
+			</div>
+			<ol class="question-list">
+				<li class="question"><span class="question-number">7.1</span><div><p>Was sollte die Verwaltung bei Mitteilungen an die Bewohner:innen besonders beachten?</p></div></li>
+				<li class="question"><span class="question-number">7.2</span><div><p>Wenn Sie eine Sache an der Kommunikation oder an einem Ablauf verbessern könnten: Welche wäre das?</p></div></li>
+				<li class="question"><span class="question-number">7.3</span><div><p>Gibt es noch etwas, das für Sie wichtig ist und worüber wir noch nicht gesprochen haben?</p></div></li>
+			</ol>
+		</section>
+
+		<aside class="interviewer-note" aria-labelledby="note-title">
+			<h2 id="note-title">Hinweise für die interviewende Person</h2>
+			<ul>
+				<li>Zuerst nach einer konkreten Erfahrung fragen und erzählen lassen; vertiefende Fragen nur bei Bedarf einsetzen.</li>
+				<li>Nicht voraussetzen, dass jemand einen bestimmten Kontaktweg kennt oder nutzt. Bekannte, ausprobierte und bevorzugte Wege getrennt notieren.</li>
+				<li>QR-Codes, Karten oder andere konkrete Lösungen nicht vorwegnehmen. Wenn die Person einen Prozess erwähnt, nach ihrem tatsächlichen Ablauf fragen.</li>
+				<li>Digitale Fähigkeiten nicht aus dem Alter ableiten. Die Person selbst beschreiben lassen, was vertraut, hilfreich oder schwierig ist.</li>
+				<li>Auch Umwege, persönliche Besuche, Unterstützung durch Angehörige und Situationen ohne Rückmeldung als Teil des Ablaufs festhalten.</li>
+				<li>Bei Reparaturen unterscheiden: Meldung, Bestätigung, Bearbeitung, Rückmeldung und Abschluss.</li>
+			</ul>
+		</aside>
+
+		<section class="closing" aria-labelledby="closing-title">
+			<h2 id="closing-title">Zum Abschluss</h2>
+			<p>Vielen Dank für Ihre Offenheit und Ihre Zeit. Ihre Erfahrungen helfen uns, besser zu verstehen, was im Alltag wichtig ist.</p>
+		</section>
+
+		<footer class="footer">
+			<span>Zuhus · Analyse der Nutzerbedürfnisse</span>
+			<span>Arbeitsfassung · 30. September 2026</span>
+		</footer>
+	</main>
+</body>
+</html>
