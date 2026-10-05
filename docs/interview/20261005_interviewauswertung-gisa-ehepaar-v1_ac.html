@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Anonymisierte Auswertung eines Doppelinterviews mit einem Ehepaar (84 und 80 Jahre) in der GISA, getrennt nach Person.">
+	<title>Interviewauswertung Ehepaar GISA | Zuhus</title>
+	<style>
+		:root {
+			color-scheme: light;
+			--ink: #202a27;
+			--muted: #56635e;
+			--line: #d9dfda;
+			--paper: #fff;
+			--canvas: #f2f5f1;
+			--green: #175b49;
+			--green-soft: #e8f1ec;
+			--coral: #a44232;
+			--coral-soft: #f8ece8;
+			--gold: #795a17;
+			--gold-soft: #f7f1df;
+			--slate: #4a5a66;
+			--slate-soft: #e9eef1;
+		}
+
+		* { box-sizing: border-box; }
+
+		body {
+			margin: 0;
+			background: var(--canvas);
+			color: var(--ink);
+			font: 16px/1.6 "Avenir Next", Avenir, "Segoe UI", sans-serif;
+		}
+
+		.page {
+			width: min(100% - 40px, 960px);
+			margin: 36px auto 64px;
+		}
+
+		.masthead {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 16px;
+			padding-bottom: 14px;
+			border-bottom: 1px solid var(--line);
+			color: var(--muted);
+			font-size: 12px;
+			font-weight: 700;
+			letter-spacing: .08em;
+			text-transform: uppercase;
+		}
+
+		.masthead strong { color: var(--green); }
+
+		h1, h2, h3, p { margin-top: 0; }
+
+		h1 {
+			max-width: 780px;
+			margin: 28px 0 10px;
+			font-family: Georgia, "Times New Roman", serif;
+			font-size: clamp(32px, 5.5vw, 50px);
+			font-weight: 500;
+			line-height: 1.08;
+		}
+
+		.subtitle {
+			max-width: 700px;
+			margin-bottom: 24px;
+			color: var(--muted);
+			font-size: 18px;
+		}
+
+		.meta-row {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px 24px;
+			margin-bottom: 18px;
+			color: var(--muted);
+			font-size: 13px;
+		}
+
+		.meta-row span::before {
+			content: "";
+			display: inline-block;
+			width: 7px;
+			height: 7px;
+			margin: 0 8px 1px 0;
+			border-radius: 50%;
+			background: var(--coral);
+		}
+
+		.legend {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px 20px;
+			margin-bottom: 28px;
+			color: var(--muted);
+			font-size: 13px;
+		}
+
+		.legend span { display: inline-flex; align-items: center; gap: 7px; }
+
+		.chip {
+			display: inline-block;
+			padding: 1px 8px;
+			border-radius: 999px;
+			font-size: 11px;
+			font-weight: 700;
+			letter-spacing: .03em;
+			white-space: nowrap;
+		}
+
+		.chip.a { background: var(--green-soft); color: var(--green); }
+		.chip.b { background: var(--gold-soft); color: var(--gold); }
+		.chip.unsure { background: var(--slate-soft); color: var(--slate); }
+		.chip.prio { background: var(--coral-soft); color: var(--coral); }
+
+		.note {
+			padding: 20px 24px;
+			border-left: 4px solid var(--green);
+			background: var(--paper);
+		}
+
+		.note h2 {
+			margin-bottom: 8px;
+			color: var(--green);
+			font-size: 15px;
+			letter-spacing: .04em;
+			text-transform: uppercase;
+		}
+
+		.note p:last-child, .note ul:last-child { margin-bottom: 0; }
+		.note ul { margin: 6px 0 0; padding-left: 20px; }
+		.note li { padding: 2px 0; }
+
+		.note.method { margin-top: 38px; border-left-color: var(--coral); background: var(--coral-soft); }
+		.note.method h2 { color: var(--coral); }
+
+		/* Personen-Übersicht */
+		.profiles {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 16px;
+			margin: 28px 0 8px;
+		}
+
+		.profile {
+			padding: 20px 22px;
+			border-top: 5px solid var(--green);
+			background: var(--paper);
+		}
+
+		.profile.b { border-top-color: var(--gold); }
+
+		.profile h3 {
+			margin-bottom: 4px;
+			font-family: Georgia, "Times New Roman", serif;
+			font-size: 22px;
+			font-weight: 500;
+		}
+
+		.profile .role { margin-bottom: 12px; color: var(--muted); font-size: 14px; }
+
+		.profile dl { display: grid; grid-template-columns: 96px 1fr; gap: 6px 12px; margin: 0; font-size: 14px; }
+		.profile dt { color: var(--muted); font-weight: 700; }
+		.profile dd { margin: 0; }
+
+		/* Personen-Abschnitte */
+		.person-heading {
+			display: grid;
+			grid-template-columns: 48px 1fr;
+			align-items: start;
+			gap: 14px;
+			margin: 46px 0 14px;
+		}
+
+		.person-badge {
+			display: grid;
+			width: 42px;
+			aspect-ratio: 1;
+			place-items: center;
+			border-radius: 50%;
+			background: var(--green);
+			color: white;
+			font-family: Georgia, "Times New Roman", serif;
+			font-size: 20px;
+		}
+
+		.person-b .person-badge { background: var(--gold); }
+		.shared .person-badge { background: var(--slate); }
+
+		.person-heading h2 {
+			margin: 2px 0 3px;
+			font-family: Georgia, "Times New Roman", serif;
+			font-size: 27px;
+			font-weight: 500;
+			line-height: 1.2;
+		}
+
+		.person-heading p { margin: 0; color: var(--muted); font-size: 14px; }
+
+		.answers {
+			width: 100%;
+			border-collapse: collapse;
+			background: var(--paper);
+			font-size: 15px;
+		}
+
+		.answers th, .answers td {
+			padding: 12px 14px;
+			border-bottom: 1px solid var(--line);
+			text-align: left;
+			vertical-align: top;
+		}
+
+		.answers thead th {
+			color: var(--muted);
+			font-size: 12px;
+			letter-spacing: .06em;
+			text-transform: uppercase;
+			background: var(--canvas);
+		}
+
+		.answers td.q { width: 30%; }
+		.answers .qnum { display: block; color: #737b77; font-size: 12px; font-weight: 800; }
+		.answers .qnum.priority { color: var(--coral); }
+		.answers .qtext { font-weight: 600; }
+
+		.person-a .answers { border-top: 3px solid var(--green); }
+		.person-b .answers { border-top: 3px solid var(--gold); }
+		.shared .answers { border-top: 3px solid var(--slate); }
+
+		blockquote {
+			margin: 8px 0 0;
+			padding: 2px 0 2px 12px;
+			border-left: 3px solid var(--line);
+			color: var(--muted);
+			font-style: italic;
+		}
+
+		.insights {
+			margin: 16px 0 0;
+			padding: 18px 22px 18px 42px;
+			background: var(--green-soft);
+		}
+
+		.person-b .insights { background: var(--gold-soft); }
+		.shared .insights { background: var(--slate-soft); }
+
+		.insights strong.label {
+			display: block;
+			margin: 0 0 6px -20px;
+			font-size: 13px;
+			letter-spacing: .05em;
+			text-transform: uppercase;
+		}
+
+		.insights li { padding: 3px 0; }
+
+		.gaps { margin-top: 12px; color: var(--muted); font-size: 14px; }
+
+		.footer {
+			display: flex;
+			justify-content: space-between;
+			gap: 16px;
+			margin-top: 30px;
+			padding-top: 12px;
+			border-top: 1px solid var(--line);
+			color: var(--muted);
+			font-size: 12px;
+		}
+
+		@media (max-width: 700px) {
+			.page { width: min(100% - 32px, 960px); margin-top: 22px; }
+			.profiles { grid-template-columns: 1fr; }
+			.person-heading { grid-template-columns: 40px 1fr; gap: 10px; }
+			.person-badge { width: 36px; }
+			.answers, .answers tbody, .answers tr, .answers td { display: block; width: 100%; }
+			.answers thead { display: none; }
+			.answers td.q { width: 100%; padding-bottom: 0; border-bottom: 0; }
+			.footer { flex-direction: column; gap: 4px; }
+		}
+
+		@media print {
+			@page { size: A4; margin: 16mm 15mm; }
+			body { background: white; font-size: 10.5pt; }
+			.page { width: auto; margin: 0; }
+			h1 { font-size: 28pt; }
+			.person-heading { margin-top: 26px; break-after: avoid; }
+			.answers tr, .profile, .note, .insights { break-inside: avoid; }
+			.person-b { break-before: page; }
+		}
+	</style>
+</head>
+<body>
+	<main class="page">
+		<div class="masthead">
+			<strong>Zuhus</strong>
+			<span>Interviewauswertung · Nutzeranalyse</span>
+		</div>
+
+		<header>
+			<h1>Doppelinterview mit einem Ehepaar in der GISA</h1>
+			<p class="subtitle">Auswertung getrennt nach Person, gegliedert nach dem Fragenkatalog v7</p>
+			<div class="meta-row">
+				<span>Interview vom 4. Oktober 2026</span>
+				<span>Dauer: ca. 43 Minuten</span>
+				<span>Gemeinsam befragt, anonymisiert</span>
+			</div>
+			<div class="legend" aria-label="Legende">
+				<span><i class="chip a">A</i>Person A, 84 Jahre</span>
+				<span><i class="chip b">B</i>Person B, 80 Jahre</span>
+				<span><i class="chip unsure">unsicher</i>Zuordnung aus dem Gesprächsverlauf abgeleitet</span>
+				<span><i class="chip prio">1.3</i>Priorisierte Frage</span>
+			</div>
+		</header>
+
+		<section class="note" aria-labelledby="basis-title">
+			<h2 id="basis-title">Grundlage</h2>
+			<p>Tonaufnahme, lokal transkribiert (Whisper large-v3). Die beiden Personen wurden gemeinsam befragt und haben sich oft gegenseitig ergänzt. Aussagen wurden anhand des Inhalts zugeordnet: Wer antwortet, über wen gesprochen wird («er macht gar nichts»), was die Person über sich selbst erzählt. Zitate sind sinngemäss bereinigt. Namen von Personen wurden durch Rollen ersetzt.</p>
+		</section>
+
+		<div class="profiles">
+			<article class="profile a">
+				<h3>Person A</h3>
+				<p class="role">Frau, 84 Jahre</p>
+				<dl>
+					<dt>Beruf</dt><dd>Hausfrau und Mutter, zeitweise Aushilfe im Fahrdienst des Ehemanns</dd>
+					<dt>Digital</dt><dd>Handy, Tablet, Laptop; WhatsApp mit vielen Kontakten</dd>
+					<dt>Rolle im Paar</dt><dd>Liest die Mitteilungen, hält Kontakt zur Familie, übernimmt Digitales für B</dd>
+					<dt>Sozial</dt><dd>Besucht Anlässe wie den Café-Treff, kennt viele Nachbar:innen</dd>
+				</dl>
+			</article>
+			<article class="profile b">
+				<h3>Person B</h3>
+				<p class="role">Mann, 80 Jahre, Ehemann von A</p>
+				<dl>
+					<dt>Beruf</dt><dd>Handwerker, nach Knieproblemen Industriearbeit, danach selbstständig im Fahrdienst für Kinder mit Behinderung; pensioniert mit 65</dd>
+					<dt>Digital</dt><dd>Nur Telefon, «falls ich umfalle»; sonst keine Nutzung</dd>
+					<dt>Rolle im Paar</dt><dd>Macht die Wäsche, meldet Reparaturen beim Hauswart</dd>
+					<dt>Sozial</dt><dd>Meidet Anlässe mit vielen Leuten</dd>
+				</dl>
+			</article>
+		</div>
+
+		<!-- Person A -->
+		<section class="person-a" aria-labelledby="person-a">
+			<div class="person-heading">
+				<span class="person-badge">A</span>
+				<div><h2 id="person-a">Ergebnisse Person A</h2><p>Frau, 84 Jahre</p></div>
+			</div>
+			<table class="answers">
+				<thead><tr><th>Frage</th><th>Aussagen</th></tr></thead>
+				<tbody>
+					<tr>
+						<td class="q"><span class="qnum">1.2</span><span class="qtext">Was gefällt besonders</span></td>
+						<td>Die Kinder, die draussen spielen und musizieren. Essen bei schönem Wetter auf dem Balkon.<blockquote>«Ich sage immer: Das ist lebendig.»</blockquote></td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum priority">2.1</span><span class="qtext">Informationen aus der Genossenschaft</span></td>
+						<td>Über Gespräche, das Mitteilungsblatt, Briefe im Briefkasten und das Anschlagbrett draussen. A schaut dort ab und zu hinein, B nicht.<blockquote>«Wenn etwas Neues kommt, ja. Er weniger. Er ist nicht so interessiert.»</blockquote></td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum">2.2</span><span class="qtext">Gedruckte Mitteilungen</span></td>
+						<td>Liest nicht alle Newsletter, aber viele. Behält nur, was interessiert, zurzeit vor allem Informationen zum Umbau. Der Rest wird entsorgt.</td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum">4.2</span><span class="qtext">Schwierigkeiten Waschküche</span> <i class="chip unsure">unsicher</i></td>
+						<td>Die Waschkarte wird mit einem Einzahlungsschein an der Post aufgeladen (CHF 70). Online aufladen wäre möglich, ist aber «zu kompliziert». Eine Bekannte (fast 90) hat mit derselben Karte Probleme; A hat es ihr erklärt.<blockquote>«Vielleicht ginge es, wenn mir das jemand ein- bis zweimal erklärt.»</blockquote></td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum">6.1</span><span class="qtext">Digitale Angebote und Geräte</span></td>
+						<td>Handy und Tablet. WhatsApp mit «einer ganzen Liste von Kollegen». Schwiegertochter und Enkelin schicken Nachrichten und Fotos, A zeigt sie B. Mit den Kindern meist per Telefon, sie kommen oft vorbei.</td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum">6.2</span><span class="qtext">Organisatorisches digital</span></td>
+						<td>Kauft selten online ein, «es funktioniert nicht immer so gut». Sieht den späten Einstieg als Grund.<blockquote>«Vom Alter her sind wir zu spät hineingewachsen.»</blockquote></td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum priority">6.3</span><span class="qtext">Wenn es nicht weitergeht</span></td>
+						<td>A übernimmt das Digitale für B, stösst selbst aber auch an Grenzen. Bei technischen Problemen helfen die Kinder.</td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum priority">7.3</span><span class="qtext">Hilfe, die alles kann</span> <i class="chip unsure">unsicher</i></td>
+						<td>Sieht einen klaren Bedarf, anders als B: bei Problemen, die man selbst nicht lösen kann. Aktuelles Beispiel: Der Fernseher zeigt plötzlich neue Sender, sie wissen nicht warum. Die Kinder helfen, sind aber nicht immer verfügbar.<blockquote>«Man will die Kinder auch nicht immer fragen.»</blockquote><blockquote>«Manchmal kommen sehr viele kleine Sachen.»</blockquote></td>
+					</tr>
+				</tbody>
+			</table>
+			<ul class="insights">
+				<strong class="label">Kernaussagen Person A</strong>
+				<li>Ist die Informationsdrehscheibe im Haushalt: Sie liest, filtert und gibt weiter.</li>
+				<li>Digital aktiv im privaten Bereich (WhatsApp, Fotos), aber nicht bei administrativen Abläufen.</li>
+				<li>Wäre bereit, Digitales zu lernen, wenn es ihr jemand persönlich ein- bis zweimal zeigt.</li>
+				<li>Formuliert ein offenes Bedürfnis nach Hilfe bei «kleinen Sachen», wenn die Familie nicht verfügbar ist.</li>
+			</ul>
+		</section>
+
+		<!-- Person B -->
+		<section class="person-b" aria-labelledby="person-b">
+			<div class="person-heading">
+				<span class="person-badge">B</span>
+				<div><h2 id="person-b">Ergebnisse Person B</h2><p>Mann, 80 Jahre</p></div>
+			</div>
+			<table class="answers">
+				<thead><tr><th>Frage</th><th>Aussagen</th></tr></thead>
+				<tbody>
+					<tr>
+						<td class="q"><span class="qnum priority">1.3</span><span class="qtext">Anliegen: an wen</span></td>
+						<td>Trennt klar: Reparaturen gehen an den Hauswart, Administratives ans Büro.<blockquote>«Wenn es Büro ist, ist es Bürosache. Wenn etwas kaputt ist, mache ich das mit dem Hauswart ab.»</blockquote></td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum priority">3.1</span><span class="qtext">Letzte Reparatur</span></td>
+						<td>Kühlschrank: Die Dichtung war schon beim Einzug gerissen und kam auf die Mängelliste. Nach rund vier Jahren wurde es im Kühlschrank immer wärmer (Thermometer, höherer Stromverbrauch). Zuvor wurde auch ein alter, verfärbter WC-Hahn ersetzt, etwa 1½ bis 2 Jahre nach dem Einzug.</td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum">3.2–3.3</span><span class="qtext">Erster Schritt, Meldung</span></td>
+						<td>Hat sich selbst beim Hauswart gemeldet, persönlich. Wollte ursprünglich nur die Dichtung ersetzen lassen.<blockquote>«Meistens sage ich es dem Hauswart. Er gibt mir Bescheid, ob es geht oder nicht.»</blockquote></td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum priority">3.4</span><span class="qtext">Nach der Meldung</span></td>
+						<td>Der Hauswart kam rasch vorbei: Die Dichtung lässt sich nicht einzeln ersetzen, es gibt einen neuen Kühlschrank. Lieferung innert etwa einer Woche. <strong>Auffällig:</strong> Der Eintrag auf der Mängelliste beim Einzug führte nicht zur Reparatur. Erst die eigene erneute Meldung löste sie aus. Wohin die Liste ging, weiss das Paar nicht.</td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum">3.6–3.7</span><span class="qtext">Abschluss, Verbesserungen</span></td>
+						<td>Sehr zufrieden, keine Verbesserungswünsche. Wartet geduldig, solange es nicht dringend ist.<blockquote>«Wenn er sagt, eine Woche oder zwei, dann warte ich. Wenn das Wasser überläuft, ist das eine andere Sache.»</blockquote></td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum">4.1</span><span class="qtext">Ablauf Waschküche</span></td>
+						<td>Macht die Wäsche selbst. Es gibt keine Reservation: Von fünf Parteien waschen nur drei. Fester Tag (jeden zweiten Montag). Am Sonntagabend schaut er, ob die Maschine frei ist, und legt die Wäsche bereit. Die Nachbarn wissen Bescheid; bei Abweichungen wartet er einfach.</td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum">5.1–5.3</span><span class="qtext">Kontakt mit der Verwaltung</span></td>
+						<td>Persönlich im Büro oder über den Hauswart. Schätzt, dass man ihn kennt. <i class="chip unsure">unsicher</i><blockquote>«Wenn ich ein Problem habe, gehe ich aufs Büro. Die kennen mich gut. Das ist für mich wichtig.»</blockquote></td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum">6.1–6.2</span><span class="qtext">Digitale Angebote</span></td>
+						<td>Nutzt nur das Telefon für Notfälle. Kein Computer, kein WhatsApp. Erklärt es mit dem späten Einstieg.<blockquote>«Da bin ich kein Herr darüber, das muss ich gerade sagen. Ich komme mit dem Zeug nicht zurecht.»</blockquote><blockquote>«Wenn du jung bist und von Anfang an mitmachst, ist jeder neue Schritt kein Problem.»</blockquote></td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum priority">6.3</span><span class="qtext">Wenn es nicht weitergeht</span></td>
+						<td>Überlässt alles Digitale seiner Frau.<blockquote>«Wenn ich ein Problem mit dem Gerät habe, macht sie das für mich.»</blockquote>A ergänzt: «Aber auch nicht mehr alles.»</td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum priority">7.3</span><span class="qtext">Hilfe, die alles kann</span> <i class="chip unsure">unsicher</i></td>
+						<td>Sieht eher keinen Bedarf: «Dafür haben wir Kinder.» Wenn er die Kinder ruft, kommen sie sofort (z. B. für Lampen). Wenn es eine Ansprechperson gäbe, sollte diese jemanden organisieren, der vorbeikommt.</td>
+					</tr>
+				</tbody>
+			</table>
+			<ul class="insights">
+				<strong class="label">Kernaussagen Person B</strong>
+				<li>Der Hauswart ist seine wichtigste Ansprechperson. Die Beziehung ist persönlich und von Vertrauen geprägt.</li>
+				<li>Digital vollständig von der Partnerin abhängig; eigene Nutzung wird nicht angestrebt.</li>
+				<li>Früher hat er selbst repariert, heute ist das gesundheitlich nicht mehr möglich. A beschreibt ihn als sehr ordentlich: «Alles muss tipptopp sein.»</li>
+				<li>Spielt Probleme eher herunter und sieht die Familie als ausreichendes Netz.</li>
+			</ul>
+		</section>
+
+		<!-- Gemeinsam -->
+		<section class="shared" aria-labelledby="shared">
+			<div class="person-heading">
+				<span class="person-badge">A+B</span>
+				<div><h2 id="shared">Gemeinsame Aussagen</h2><p>Beide haben zugestimmt oder ergänzt, oder die Aussage ist keiner Person eindeutig zuzuordnen</p></div>
+			</div>
+			<table class="answers">
+				<thead><tr><th>Frage</th><th>Aussagen</th></tr></thead>
+				<tbody>
+					<tr>
+						<td class="q"><span class="qnum">1.1</span><span class="qtext">Wohndauer</span></td>
+						<td>Rund 4–5 Jahre (aus dem Gespräch abgeleitet). Sie möchten bleiben: «Wir gehen nicht mehr zurück. Es ist hier wunderschön, die Aussicht, alles.»</td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum priority">1.3</span><span class="qtext">Anliegen: an wen</span></td>
+						<td>Bisher immer zuerst der Hauswart, sonst das Büro, oder bei einem zufälligen Treffen. Telefon ans Sekretariat nur gelegentlich.<blockquote>«Wir haben immer schöne Antworten.»</blockquote></td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum">1.3</span><span class="qtext">Wert des persönlichen Kontakts</span></td>
+						<td>Der persönliche Kontakt ist auch sozial wichtig, nicht nur als Kanal.<blockquote>«Speziell für alte Leute. Wir haben ja nicht mehr so viele andere Kontakte. Dann ist man froh, wenn man so Kontakt hat.»</blockquote></td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum priority">2.4</span><span class="qtext">Information zu spät</span></td>
+						<td>Nie erlebt: «Die Information ist gut.»</td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum">6.2–6.4</span><span class="qtext">Digitale Angebote der GISA</span></td>
+						<td>Nutzen keine digitalen Angebote der GISA, sondern gehen direkt ins Büro: «Einmal haben wir etwas gemacht, aber wenn möglich nicht.»</td>
+					</tr>
+					<tr>
+						<td class="q"><span class="qnum">–</span><span class="qtext">Zusammenleben</span></td>
+						<td>Grüssen alle im Haus. Eine Nachbarin hat von sich aus Hilfe angeboten, z. B. für Gänge zur Post. Selbstbild: «Wir sind nicht so anspruchsvoll.» – «Wie man mit den Leuten umgeht, kommt vielmals zurück.»</td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="gaps"><strong>Nicht gefragt oder nicht beantwortet:</strong> 2.3, 3.5, 4.3, 5.4, 5.5, 7.1, 7.2, 7.4</p>
+		</section>
+
+		<section class="note method" aria-labelledby="method-title">
+			<h2 id="method-title">Hinweise zur Methodik</h2>
+			<ul>
+				<li><strong>Möglicher Bias:</strong> Der Ehemann der Interviewerin ist Vorstandsmitglied der GISA, und das wurde zu Beginn erwähnt. Antworten über Genossenschaft und Verwaltung könnten dadurch positiver ausgefallen sein.</li>
+				<li><strong>Lösungen vorweggenommen:</strong> In der Einleitung wurden die Waschkarte und Formulare als Beispiele für schwierige digitale Prozesse genannt. Der Leitfaden sieht vor, das zu vermeiden.</li>
+				<li><strong>Doppelinterview:</strong> A hat häufig für B geantwortet. Die Aussagen von B sind deshalb teilweise durch A vermittelt.</li>
+				<li><strong>Zuordnung:</strong> Mit <i class="chip unsure">unsicher</i> markierte Stellen sollten anhand der Aufnahme geprüft werden.</li>
+			</ul>
+		</section>
+
+		<div class="footer">
+			<span>Zuhus · Analyse der Nutzerbedürfnisse</span>
+			<span>Arbeitsfassung v1 · 5. Oktober 2026</span>
+		</div>
+	</main>
+</body>
+</html>
